@@ -61,5 +61,60 @@ const bifurcateBy = (arr, fn) =>
 bifurcateBy(['ab', 'bb', 'cc', 'db'], x => x[1] === 'b')  // [ ['ab', 'bb', 'db'], ['cc'] ]
 
 
+/**
+ * chunk
+ * 数组分块
+ * Array.from()  // 类数组 -> 数组
+ * Array.from(arraylike, () => {...})  <=> Array.from(arraylike).map(() => {...})
+ */
+const chunk = (arr, size) => 
+  Array.from({length: Math.ceil(arr.length / size)}, (item, index) => arr.slice(index * size, index * size + size))
+
+// Array.from({length: Math.ceil(arr.length / size)}).map((item, index) => arr.slice(index * size, index * size + size))
+
+chunk([1, 2, 3, 4, 5], 2); // [[1,2],[3,4],[5]]
+
+
+
+/**
+ * compact
+ * Array.prototype.filter(() => {...})  // 过滤 返回新数组 
+ * Boolean()  // false null 0 '' NaN  --> false
+ * 
+ * Boolean(Boolean(false))      // false   typeof Boolean(false)  === 'boolean'
+ * Boolean(new Boolean(false))  // true    typeof new Boolean(false) === 'object'
+ */
+const compact = arr => arr.filter(Boolean)
+
+compact([0, 1, false, 2, '', 3, 'a', 'e' * 23, NaN, 's', 34]); // [ 1, 2, 3, 'a', 's', 34 ]
+
+
+
+/**
+ * countBy
+ * [1,2,3].map(Math.floor)  <==> [1,2,3].map(item => Math.floor(item)) 
+ * 
+ */
+
+const countBy = (arr, fn) => 
+  arr.map(item => typeof fn === 'function' ? fn(item) : item[fn])
+    .reduce((acc, item) => (acc[item] = acc[item] ? acc[item] + 1 : 1, acc), {})
+
+countBy([6.1, 4.2, 6.3], Math.floor)        // {4: 1, 6: 2}
+countBy(['one', 'two', 'three'], 'length')  // {3: 2, 5: 1}
+
+
+
+/**
+ * countOccurrences
+ * 指定值的个数
+ *
+ */
+const countOccurrences = (arr, val) => 
+  arr.reduce((acc, item) => item === val ? acc + 1 : acc, 0)
+
+
+countOccurrences([1, 1, 2, 1, 2, 3], 1)     // 3
+
 
 
