@@ -113,8 +113,121 @@ countBy(['one', 'two', 'three'], 'length')  // {3: 2, 5: 1}
 const countOccurrences = (arr, val) => 
   arr.reduce((acc, item) => item === val ? acc + 1 : acc, 0)
 
-
 countOccurrences([1, 1, 2, 1, 2, 3], 1)     // 3
 
 
+/**
+ * deepFlatten  TODO!
+ * 展平数组
+ *
+ */
+00000000000000000000000000000000000000000000000000000000000000000000
+const deepFlatten = arr => [].concat(arr.map(item => Array.isArray(item) ? deepFlatten(item) : item))
+
+const deepFlatten2 = arr => {
+  return arr.map(item => {
+    if (Array.isArray(item)) {
+
+    } else {
+
+    }
+  })
+}
+
+deepFlatten([1, [2], [[3], 4], 5]); // [1,2,3,4,5]
+
+
+/**
+ * difference
+ * Set()  类数组,成员唯一
+ * 
+ */
+const difference = (a, b) => {
+  const s = new Set(b)
+  return a.filter(item => !s.has(item))
+}
+
+difference([1, 2, 3], [1, 2, 4]) // [3]
+
+
+/**
+ * differenceBy
+ *
+ *
+ */
+const differenceBy = (a, b, fn) => {
+  const s = new Set(b.map(fn))
+  return a.filter(item => !s.has(fn(item)))
+}
+
+differenceBy([2.1, 1.2], [2.3, 3.4], Math.floor)          // [1.2]
+differenceBy([{ x: 2 }, { x: 1 }], [{ x: 1 }], v => v.x)  // [{x: 2}]
+
+
+/**
+ * differenceWith
+ * findIndex()  返回第一个符合条件的项的位置
+ *
+ */
+const differenceWith = (a, b, comp) => 
+  a.filter(item1 => b.findIndex(item2 => comp(item1, item2)) === -1)
+
+differenceWith([1, 1.2, 1.5, 3, 0], [1.9, 3, 0], (a, b) => Math.round(a) === Math.round(b)) // [1, 1.2]
+
+
+/**
+ * drop
+ * 
+ *
+ */
+const drop = (arr, n = 1) => arr.slice(n)
+
+drop([1, 2, 3])      // [2,3]
+drop([1, 2, 3], 2)   // [3]
+drop([1, 2, 3], 42)  // []
+
+
+/**
+ * dropRight
+ * 
+ *
+ */
+const dropRight = (arr, n = 1) => arr.alice(0, -n)
+
+dropRight([1, 2, 3])      // [1,2]
+dropRight([1, 2, 3], 2)   // [1]
+dropRight([1, 2, 3], 42)  // []
+
+
+/**
+ * dropRightWhile
+ * 从数组末端开始,返回符合条件的项
+ *
+ */
+const dropRightWhile = (arr, fn) => {
+  while(arr.length && !fn(arr[arr.length - 1])) arr = arr.slice(0, -1)  // 去除不符合条件的项
+  return arr
+}
+
+dropRightWhile([1, 2, 3, 4], n => n < 3)   // [1, 2]
+
+
+/**
+ * dropWhile
+ * 
+ *
+ */
+const dropWhile = (arr, func) => {
+  while (arr.length > 0 && !func(arr[0])) arr = arr.slice(1);
+  return arr
+}
+
+const dropWhile2 = (arr, fn) => 
+  arr.reduce((acc, item) => {
+    if (fn(item)) acc.push(item)
+    return acc
+  }, [])
+
+
+dropWhile([1, 2, 3, 4], n => n >= 3)  // [3,4]
 
