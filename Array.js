@@ -228,6 +228,77 @@ const dropWhile2 = (arr, fn) =>
     return acc
   }, [])
 
-
 dropWhile([1, 2, 3, 4], n => n >= 3)  // [3,4]
+
+
+/**
+ * everyNth
+ * 每隔n个
+ */
+const everyNth = (arr, n) => arr.filter((item, index) => (index + 1) % n === 0)
+
+everyNth([1, 2, 3, 4, 5, 6], 2) // [ 2, 4, 6 ]
+
+
+/**
+ * filterFalsy
+ * 过滤掉数组中的虚假值
+ *
+ */
+const filterFalsy = arr => arr.filter(item => Boolean(item))  // arr.filter(Boolean)
+
+filterFalsy(['', true, {}, false, 'sample', 1, 0]) // [true, {}, 'sample', 1]
+
+
+/**
+ * filterNonUnique
+ * 过滤掉数组里的非唯一值
+ * 首次出现的次序 === 最后出现的次序 -> 唯一值
+ */
+const filterNonUnique = arr => arr.filter(item => arr.indexOf(item) === arr.lastIndexOf(item))
+
+filterNonUnique([1, 2, 2, 3, 4, 4, 5]) // [1, 3, 5]
+
+
+/**
+ * filterNonUniqueBy
+ * 指定筛选规则，选出唯一值
+ * 
+ */
+const filterNonUniqueBy = (arr, fn) => 
+  arr.filter((v, i) => arr.every((x, j) => (i === j) === fn(v, x)))
+
+filterNonUniqueBy(
+  [
+    { id: 0, value: 'a' },
+    { id: 1, value: 'b' },
+    { id: 2, value: 'c' },
+    { id: 1, value: 'd' },
+    { id: 0, value: 'e' }
+  ],
+  (a, b) => a.id == b.id
+) // [ { id: 2, value: 'c' } ]
+
+
+/**
+ * findLast
+ * 返回满足条件的最后一个元素
+ *
+ */
+const findLast = (arr, fn) => arr.filter(fn).pop()
+
+findLast([1, 2, 3, 4], n => n % 2 === 1) // 3
+
+
+/**
+ * findLastIndex 
+ * 返回满足条件的最后一个元素的index
+ * 先将index整合到value中,再筛选
+ */
+const findLastIndex = (arr, fn) => 
+  arr.map((item, index) => [item, index])
+    .filter(item => fn(item[0]))
+    .pop()[1]
+
+findLastIndex([1, 2, 3, 4], n => n % 2 === 1) // 2 (index of the value 3)
 
