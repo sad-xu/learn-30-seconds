@@ -302,3 +302,97 @@ const findLastIndex = (arr, fn) =>
 
 findLastIndex([1, 2, 3, 4], n => n % 2 === 1) // 2 (index of the value 3)
 
+
+/**
+ * flatten
+ * 展平数组到指定深度
+ *
+ */
+const flatten = (arr, depth = 1) => 
+  arr.reduce((arr, item) => arr.concat(depth > 1 && item instanceof Array ? flatten(item, depth - 1) : item), [])
+
+flatten([1, [2], 3, 4]) // [1, 2, 3, 4]
+flatten([1, [2, [3, [4, 5], 6], 7], 8], 2) // [1, 2, 3, [4, 5], 6, 7, 8]
+
+
+/**
+ * forEachRight
+ * 从后往前执行给定函数
+ * 
+ */
+const forEachRight = (arr, fn) => arr.reverse().forEach(fn)
+
+forEachRight([1, 2, 3, 4], val => console.log(val)) // '4', '3', '2', '1'
+
+
+/**
+ * groupBy
+ * 根据给定函数对数组分组
+ *
+ */
+const groupBy = (arr, fn) => 
+  arr.reduce((acc, item) => {
+    let val = typeof fn === 'function' ? fn(item) : item[fn]
+    acc[val] = (acc[val] || []).concat(item)
+    return acc
+  }, {})
+
+groupBy([6.1, 4.2, 6.3], Math.floor) // {4: [4.2], 6: [6.1, 6.3]}
+groupBy(['one', 'two', 'three'], 'length') // {3: ['one', 'two'], 5: ['three']}
+
+
+/**
+ * head
+ * 返回第一个元素
+ */
+const head = arr => arr[0]
+
+head([1, 2, 3]) // 1
+
+
+/**
+ * indexOfAll
+ * 返回匹配值的次序
+ */
+const indexOfAll = (arr, val) => 
+  arr.reduce((acc, item, index) => {
+    if (item === val) acc.push(index)
+    return acc
+  }, [])
+
+indexOfAll([1, 2, 3, 1, 2, 3], 1) // [0,3]
+indexOfAll([1, 2, 3], 4) // []
+
+/**
+ * initial
+ * 剔除数组最后一项
+ *
+ */
+const initial = arr => arr.slice(0, -1)
+
+initial([1, 2, 3]) // [1,2]
+
+
+/**
+ * initialize2DArray
+ * 生成指定二维数组
+ *
+ */
+const initialize2DArray = (row, col, val = null) => 
+  Array.from({length: row}).map(() => Array.from({length: col}).fill(val))
+
+initialize2DArray(2, 2, 0) // [[0,0], [0,0]]
+
+
+/**
+ * initializeArrayWithRange
+ * 返回一个指定开始、结束、步长的数组
+ *
+ */
+const initializeArrayWithRange = (end, start = 0, step = 1) => 
+  Array.from({length: Math.ceil((end - start + 1) / step)}, (item, index) => start + index * step)
+
+initializeArrayWithRange(5) // [0,1,2,3,4,5]
+initializeArrayWithRange(7, 3) // [3,4,5,6,7]
+initializeArrayWithRange(9, 0, 2) // [0,2,4,6,8]
+
