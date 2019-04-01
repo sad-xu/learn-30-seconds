@@ -396,3 +396,53 @@ initializeArrayWithRange(5) // [0,1,2,3,4,5]
 initializeArrayWithRange(7, 3) // [3,4,5,6,7]
 initializeArrayWithRange(9, 0, 2) // [0,2,4,6,8]
 
+
+/**
+ * initializeArrayWithRangeRight
+ * 同上，反向
+ *
+ */
+const initializeArrayWithRangeRight = (end, start = 0, step = 1) => 
+  Array.from({ length: (end - start + 1) / step}).map((item, index, arr) => start + (arr.length - index + 1) * step)
+
+initializeArrayWithRangeRight(5) // [5,4,3,2,1,0]
+initializeArrayWithRangeRight(7, 3) // [7,6,5,4,3]
+initializeArrayWithRangeRight(9, 0, 2) // [8,6,4,2,0]
+
+
+/**
+ * initializeArrayWithValues
+ * 返回用指定值填充的指定长度的数组
+ *
+ */
+const initializeArrayWithValues = (num, val = 0) => Array.from({ length: num }).fill(val)
+
+initializeArrayWithValues(5, 2) // [2, 2, 2, 2, 2]
+
+
+/**
+ * initializeNDArray
+ * 返回用指定值填充的指定维度的数组
+ *
+ */
+const initializeNDArray = (val, ...args) => 
+  args.length === 0 
+    ? val 
+    : Array.from({ length: args[0] }).map(() => initializeNDArray(val, ...args.slice(1)))
+
+initializeNDArray(1, 3) // [1,1,1]
+initializeNDArray(5, 2, 2, 2) // [[[5,5],[5,5]],[[5,5],[5,5]]]
+
+
+/**
+ * intersection
+ * 提取交集
+ *
+ */
+const intersection = (a, b) => {
+  return a.filter(v => b.indexOf(v) >= 0)
+}
+
+intersection([1, 2, 3], [4, 3, 2]) // [2, 3]
+
+
