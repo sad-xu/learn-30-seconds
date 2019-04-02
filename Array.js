@@ -439,10 +439,56 @@ initializeNDArray(5, 2, 2, 2) // [[[5,5],[5,5]],[[5,5],[5,5]]]
  * 提取交集
  *
  */
-const intersection = (a, b) => {
-  return a.filter(v => b.indexOf(v) >= 0)
-}
+const intersection = (a, b) => a.filter(v => b.indexOf(v) >= 0)
 
 intersection([1, 2, 3], [4, 3, 2]) // [2, 3]
 
 
+/**
+ * intersectionBy
+ * 根据指定函数的返回值提取交集
+ *
+ */
+const intersectionBy = (a, b, fn) => {
+  b = b.map(item => fn(item))
+  return a.filter(v => b.indexOf(fn(v)) >= 0)
+} 
+
+intersectionBy([2.1, 1.2], [2.3, 3.4], Math.floor) // [2.1]
+
+
+/**
+ * intersectionWith
+ * 根据指比较器返回存在的元素列表
+ *
+ */
+const intersectionWith = (a, b, comp) => a.filter(x => b.findIndex(y => comp(x, y)) !== -1)
+
+intersectionWith([1, 1.2, 1.5, 3, 0], [1.9, 3, 0, 3.9], (a, b) => Math.round(a) === Math.round(b)) // [1.5, 3, 0]
+
+
+/**
+ * isSorted
+ * 升序返回  1
+ * 降序返回 -1
+ * 乱序返回  0
+ */
+const isSorted = arr => {
+  let d = 0 // 初始默认乱序
+  for (let i = 1; i < arr.length; i++) {
+    let flag = arr[i - 1] - arr[i]
+    if (flag === 0) continue // 相等值跳过
+    if (d === 0) { // 首次出现升序或降序
+      d = flag
+    } else if (d * flag < 0) { // 一旦出现异序，即返回
+      return 0
+    }
+  }
+  if (d > 0) return -1
+  else if (d < 0) return 1
+  else return 0
+}
+
+isSorted([0, 1, 2, 2]) // 1
+isSorted([4, 3, 2]) // -1
+isSorted([4, 3, 5]) // 0
