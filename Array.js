@@ -492,3 +492,62 @@ const isSorted = arr => {
 isSorted([0, 1, 2, 2]) // 1
 isSorted([4, 3, 2]) // -1
 isSorted([4, 3, 5]) // 0
+
+
+/**
+ * join
+ * 根据指定分隔符和最后分隔符
+ * 数组 -> 字符串
+ */
+const join = (arr, sep = ',', end = sep) => 
+  arr.reduce((acc, item, index) => {
+    if (index === 0) {
+      acc += item
+    } else if (index === arr.length - 1) {
+      acc += end + item
+    } else {
+      acc += sep + item
+    }
+    return acc
+  }, '')
+
+join(['pen', 'pineapple', 'apple', 'pen'], ',', '&') // "pen,pineapple,apple&pen"
+join(['pen', 'pineapple', 'apple', 'pen'], ',') // "pen,pineapple,apple,pen"
+join(['pen', 'pineapple', 'apple', 'pen']) // "pen,pineapple,apple,pen"
+
+
+/**
+ * JSONtoCSV
+ * JSON转CSV
+ * 指定列项，指定分隔符
+ */
+const JSONtoCSV = (arr, col, sep = ',') => {
+  let ret = [col]
+  arr.map(obj => {
+    let m = []
+    col.forEach(val => {
+      m.push(obj[val] ? `"${obj[val]}"` : '""')
+    })
+    ret.push(m)
+  })
+  return ret.reduce((acc, item, index) => 
+    acc += item.join(sep) + (index === ret.length - 1 ? '' : '\n'), 
+    ''
+  )
+}
+
+const JSONtoCSV = (arr, col, sep = ',') =>
+  [
+    col.join(sep),
+    ...arr.map(obj =>
+      col.reduce(
+        (acc, key) => `${acc}${!acc.length ? '' : sep}"${!obj[key] ? '' : obj[key]}"`,
+        ''
+      )
+    )
+  ].join('\n')
+
+JSONtoCSV([{ a: 1, b: 2 }, { a: 3, b: 4, c: 5 }, { a: 6 }, { b: 7 }], ['a', 'b']) 
+// 'a,b\n"1","2"\n"3","4"\n"6",""\n"","7"'
+JSONtoCSV([{ a: 1, b: 2 }, { a: 3, b: 4, c: 5 }, { a: 6 }, { b: 7 }], ['a', 'b'], ';') 
+// 'a;b\n"1";"2"\n"3";"4"\n"6";""\n"";"7"'
