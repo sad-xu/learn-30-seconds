@@ -551,3 +551,44 @@ JSONtoCSV([{ a: 1, b: 2 }, { a: 3, b: 4, c: 5 }, { a: 6 }, { b: 7 }], ['a', 'b']
 // 'a,b\n"1","2"\n"3","4"\n"6",""\n"","7"'
 JSONtoCSV([{ a: 1, b: 2 }, { a: 3, b: 4, c: 5 }, { a: 6 }, { b: 7 }], ['a', 'b'], ';') 
 // 'a;b\n"1";"2"\n"3";"4"\n"6";""\n"";"7"'
+
+
+/**
+ * last
+ * 返回数组最后一项
+ */
+const last = arr => arr[arr.length - 1]
+
+last([1, 2, 3]) // 3
+
+
+/**
+ * longestItem
+ * 返回最长的一项
+ */
+const longestItem = (...vals) => 
+  vals.reduce((acc, item) => (acc.length > item.length ? acc : item))
+
+longestItem('this', 'is', 'a', 'testcase') // 'testcase'
+longestItem(...['a', 'ab', 'abc']) // 'abc'
+longestItem(...['a', 'ab', 'abc'], 'abcd') // 'abcd'
+longestItem([1, 2, 3], [1, 2], [1, 2, 3, 4, 5]) // [1, 2, 3, 4, 5]
+longestItem([1, 2, 3], 'foobar') // 'foobar'
+
+
+/**
+ * mapObject 
+ * 数组映射到对象
+ */
+const mapObject = (arr, fn) =>
+  arr.reduce((acc, item) => (acc[item] = fn(item), acc),{})
+
+// 官方答案 不是很懂
+const mapObject = (arr, fn) =>
+  (a => (
+    (a = [arr, arr.map(fn)]), a[0].reduce((acc, val, ind) => ((acc[val] = a[1][ind]), acc), {})
+  ))()
+
+const squareIt = arr => mapObject(arr, a => a * a)
+squareIt([1, 2, 3]) // { 1: 1, 2: 4, 3: 9 }
+
