@@ -592,3 +592,54 @@ const mapObject = (arr, fn) =>
 const squareIt = arr => mapObject(arr, a => a * a)
 squareIt([1, 2, 3]) // { 1: 1, 2: 4, 3: 9 }
 
+
+/**
+ * maxN
+ * 返回数组中的n个最大元素，原数组不变
+ */
+const maxN = (arr, n = 1) => [...arr].sort((a, b) => b - a).slice(0, n) 
+
+maxN([1, 2, 3]) // [3]
+maxN([1, 2, 3], 2) // [3,2]
+
+
+/**
+ * minN
+ * 返回数组中的n个最小元素，原数组不变
+ */
+const minN = (arr, n = 1) => [...arr].sort((a, b) => a - b).slice(0, n) 
+
+minN([1, 2, 3]) // [1]
+minN([1, 2, 3], 2) // [1,2]
+
+
+/**
+ * none
+ * 指定函数对数组每一项都返回false，则返回true
+ */
+const none = (arr, fn = Boolean) => !arr.some(fn)
+
+none([0, 1, 3, 0], x => x == 2) // true
+none([0, 0, 0]) // true
+
+
+/**
+ * nthElement
+ * 返回第n项 n可能为负数
+ */
+const nthElement = (arr, n = 0) => (n === -1 ? n.slice(n) : n.slice(n, n + 1))[0] 
+
+nthElement(['a', 'b', 'c'], 1) // 'b'
+nthElement(['a', 'b', 'b'], -3) // 'a'
+
+
+/**
+ * offset
+ *
+ */
+const offset = (arr, n) => arr.slice(n).concat(arr.slice(0, n))
+
+offset([1, 2, 3, 4, 5], 2) // [3, 4, 5, 1, 2]
+offset([1, 2, 3, 4, 5], -2) // [4, 5, 1, 2, 3]
+
+
