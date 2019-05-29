@@ -643,3 +643,71 @@ offset([1, 2, 3, 4, 5], 2) // [3, 4, 5, 1, 2]
 offset([1, 2, 3, 4, 5], -2) // [4, 5, 1, 2, 3]
 
 
+/**
+ * partition
+ *  
+ */
+const partition = (arr, fun) => 
+  arr.reduce((acc, item) => {
+    acc[fun(item) ? 0 : 1].push(item)
+    return acc
+  }, [[], []])
+
+const users = [
+  { user: 'barney', age: 36, active: false }, 
+  { user: 'fred', age: 40, active: true }
+]
+partition(users, o => o.active) // [[{ 'user': 'fred', 'age': 40, 'active': true }],[{ 'user': 'barney',  'age': 36, 'active': false }]]
+
+
+/**
+ * permutations 
+ * 生成数组所有项的排列 包括重复项
+ * 不会
+ */
+const permutations = arr => {
+  if (arr.length <= 2) return arr.length === 2 ? [arr, [arr[1], a[0]]] : arr
+  return arr.reduce((acc, item) => {
+    return acc.concat(permutations([...item.slice(0, i), ...item.slice(i, i + 1)]).map(val => [item, ...val]))
+  }, [])
+}
+
+permutations([1, 33, 5]) // [[1, 33, 5], [1, 5, 33], [33, 1, 5], [33, 5, 1], [5, 1, 33], [5, 33, 1]]
+
+
+/**
+ * pull
+ * 需要改变原数组
+ *
+ */
+const pull = (arr, ...args) => {
+  let pulled = arr.filter(item => !args.includes(item))
+  arr.length = 0
+  pulled.forEach(item => arr.push(item))
+}
+
+let myArray = ['a', 'b', 'c', 'a', 'b', 'c']
+pull(myArray, 'a', 'c') // myArray = [ 'b', 'b' ]
+
+
+/**
+ * pullAtIndex 
+ * 过滤指定位置的值 会改变原数组
+ */
+const pullAtIndex = (arr, indexArr) => {
+  let pulled = []
+  let other = []
+  arr.forEach((item, index) => {
+    if (indexArr.includes(index)) {
+      pulled.push(item)      
+    } else other.push(item)
+  })
+  arr.length = 0
+  other.forEach(item => arr.push(item))
+  return pulled
+}
+
+
+let myArray = ['a', 'b', 'c', 'd']
+let pulled = pullAtIndex(myArray, [1, 3]) // myArray = [ 'a', 'c' ] , pulled = [ 'b', 'd' ]
+
