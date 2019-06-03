@@ -711,3 +711,65 @@ const pullAtIndex = (arr, indexArr) => {
 let myArray = ['a', 'b', 'c', 'd']
 let pulled = pullAtIndex(myArray, [1, 3]) // myArray = [ 'a', 'c' ] , pulled = [ 'b', 'd' ]
 
+
+/**
+ * pullAtValue
+ * 
+ */
+const pullAtValue = (arr, valArr) => {
+  let pulled = []
+  let other = []
+  arr.forEach(item => {
+    if (valArr.indexOf(item) >= 0) {
+      pulled.push(item)
+    } else other.push(item)
+  })
+  arr.length = 0
+  other.forEach(item => arr.push(item))
+  return pulled
+}
+
+let myArray = ['a', 'b', 'c', 'd']
+let pulled = pullAtValue(myArray, ['b', 'd']) // myArray = [ 'a', 'c' ] , pulled = [ 'b', 'd' ]
+
+
+/**
+ * pullBy
+ * 
+ */
+const pullBy = (arr, valArr, fn) => {
+  let pulled = []
+  let other = []
+  const map = valArr.map(item => fn(item))
+  arr.forEach(item => {
+    console.log(fn(item))
+    if (map.indexOf(fn(item)) >= 0) {
+      pulled.push(item)
+    } else other.push(item)
+  })
+  arr.length = 0
+  other.forEach(v => arr.push(v))
+  return pulled
+}
+
+let myArray = [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 1 }]
+pullBy(myArray, [{ x: 1 }, { x: 3 }], o => o.x) // myArray = [{ x: 2 }]
+
+
+/**
+ * reducedFilter
+ * 
+ */
+const reducedFilter = (arr, keys, fn) => 
+  arr.filter(item => fn(item)).map(item => 
+    keys.reduce((acc, key) => {
+      acc[key] = item[key]
+      return acc
+    }, {})
+  )
+
+const data = [
+  { id: 1, name: 'john', age: 24 },
+  { id: 2, name: 'mike', age: 50 }
+]
+reducedFilter(data, ['id', 'name'], item => item.age > 24)  // [{ id: 2, name: 'mike'}]
