@@ -34,7 +34,7 @@
 │   │   ├── weex -------------------------- 混合应用
 │   ├── sfc ------------------------------- 包含单文件组件(.vue文件)的解析逻辑，用于vue-template-compiler包
 │   ├── shared ---------------------------- 包含整个代码库通用的代码
-├── package.json -------------------------- 不解释
+├── package.json -------------------------- 
 ├── yarn.lock ----------------------------- yarn 锁定文件
 ├── .editorconfig ------------------------- 针对编辑器的编码风格配置文件
 ├── .flowconfig --------------------------- flow 的配置文件
@@ -50,12 +50,12 @@
 npm run dev
 scripts/config.js + web-full-dev
 src/platforms/web/entry-runtimw-with-compiler.js
-src/platforms/web/runtime/index.js
-src/core/index.js
-src/core/instance/index.js <== Vue
+src/platforms/web/runtime/index.js -- 平台化包装
+src/core/index.js -- 添加静态属性方法
+src/core/instance/index.js -- 定义构造函数,添加原型属性方法
 ```
 
-### 原型
+### 构造函数和原型
 
 ```js
 function Vue(options) {
@@ -112,4 +112,49 @@ Vue.prototype.$mount = function(el, hydrating) {}
 
 // src/platforms/web/entry-runtimw-with-compiler.js
 Vue.prototype.$mount = function(el, hydrating) {}
+
+// src/platforms/web/runtime/index.js
+Vue.prototype.__patch__
+Vue.prototype.$mount = function(el, hydrating) {}
+
+```
+
+### 静态属性和方法
+
+```js
+// initGlobalAPI
+Vue.config
+Vue.util = {
+  warn,
+  extend,
+  mergeOptions,
+  defineReactive
+}
+Vue.set = set
+Vue.delete = del
+Vue.nextTick = nextTick
+Vue.options = {
+  components: {
+    KeepAlive,
+    Transition, // src/platforms/web/runtime/index.js
+    TransitionGroup // src/platforms/web/runtime/index.js
+  },
+  directives: { // src/platforms/web/runtime/index.js
+    model,
+    show
+  },
+  filters,
+  _base: Vue
+}
+Vue.use = function(plugin) {}
+Vue.mixin = function(mixin) {}
+Vue.cid
+Vue.extend = function(extendOptions) {}
+Vue.component = function(id, definition) {}
+Vue.directive = function(id, definition) {}
+Vue.filter = function(id, definition) {}
+Vue.version
+// src/platforms/web/entry-runtime-with-compiler.js
+Vue.compile = compileToFunctions
+
 ```
