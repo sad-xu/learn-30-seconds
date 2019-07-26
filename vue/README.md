@@ -156,5 +156,12 @@ Vue.filter = function(id, definition) {}
 Vue.version
 // src/platforms/web/entry-runtime-with-compiler.js
 Vue.compile = compileToFunctions
+```
+
+### 实例属性
+
+```js
+vm._uid
+vm._isVue
 
 ```
